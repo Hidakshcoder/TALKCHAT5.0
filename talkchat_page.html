@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>Talkchat | Premium</title>
+    
+    <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-database.js"></script>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #8e2de2;
+            --accent: #00f2fe;
+            --bg: #0f0c29;
+            --glass: rgba(255, 255, 255, 0.08);
+        }
+
+        body {
+            margin: 0; font-family: 'Inter', sans-serif;
+            background: var(--bg); color: white;
+            height: 100vh; display: flex; flex-direction: column; overflow: hidden;
+        }
+
+        header {
+            padding: 10px 20px; background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(15px); display: flex;
+            justify-content: space-between; align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        #online-users-bar {
+            background: rgba(0,0,0,0.3);
+            padding: 5px 20px; font-size: 0.7rem;
+            color: #44ff44; white-space: nowrap;
+            overflow-x: auto; border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        #output {
+            flex: 1; overflow-y: auto; padding: 15px;
+            display: flex; flex-direction: column; gap: 10px;
+            background: radial-gradient(circle at top, #1a1a2e, #0f0c29);
+        }
+
+        /* ROW STYLING: Prevents tall bubbles */
+        .msg-row { 
+            display: flex; flex-direction: column; 
+            max-width: 85%; position: relative; 
+            animation: fadeIn 0.3s ease;
+        }
+        .row-sent { align-self: flex-end; align-items: flex-end; }
+        .row-received { align-self: flex-start; align-items: flex-start; }
+
+        /* BUBBLE STYLING: Hugs the text */
+     .bubble {
+    padding: 6px 12px;              /* smaller = no tall bubbles */
+    border-radius: 18px;
+    font-size: 0.95rem;
+    line-height: 1.3;               /* FIX: controlled height */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+
+    display: inline-block;
+    width: fit-content;             /* hug content */
+    max-width: 100%;
+    
+    word-break: break-word;         /* break long text */
+    overflow-wrap: anywhere;
+    white-space: normal;            /* 🔥 FIX: no forced height */
+
+    position: relative;
+}
+
+
+        .sent .bubble { background: linear-gradient(135deg, #8e2de2, #4a00e0); border-bottom-right-radius: 4px; }
+        .received .bubble { background: var(--glass); backdrop-filter: blur(10px); border-bottom-left-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
+
+        .user-label { font-size: 0.7rem; margin-bottom: 4px; opacity: 0.6; font-weight: 600; padding: 0 5px; }
+        
+        .msg-tools { display: flex; gap: 12px; margin-top: 5px; padding: 0 5px; opacity: 0.8; }
+        .tool-btn { background: none; border: none; color: #aaa; cursor: pointer; font-size: 0.8rem; transition: 0.2s; }
+        .tool-btn:hover { color: white; transform: scale(1.1); }
+        .like-btn { color: #ff4757; }
+
+        /* MULTI-PREVIEW BAR */
+        #preview-bar {
+            display: none; padding: 10px 20px; background: rgba(0,0,0,0.8);
+            border-top: 2px solid var(--primary); align-items: center; gap: 10px;
+        }
+        #preview-container { display: flex; gap: 5px; overflow-x: auto; max-width: 150px; }
+        .preview-thumb { width: 40px; height: 40px; border-radius: 5px; object-fit: cover; border: 1px solid var(--accent); }
+
+        #typing-indicator { padding: 0 20px 5px; font-size: 0.7rem; color: var(--accent); font-style: italic; height: 15px; }
+
+        .input-container {
+            padding: 15px; background: rgba(0,0,0,0.5); backdrop-filter: blur(20px);
+            display: flex; align-items: center; gap: 10px;
+        }
+        .input-wrapper {
+            flex: 1; background: var(--glass); border-radius: 25px;
+            display: flex; align-items: center; padding: 0 15px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        #msg-input { flex: 1; background: none; border: none; color: white; padding: 12px 5px; outline: none; font-size: 16px; }
+
+        .send-btn {
+            width: 45px; height: 45px; border-radius: 50%; border: none;
+            background: var(--primary); color: white; cursor: pointer; transition: 0.3s;
+        }
+        .send-btn:hover { background: var(--accent); transform: rotate(-10deg); }
+
+        .read-more-btn { color: var(--accent); cursor: pointer; font-weight: bold; font-size: 0.8rem; display: block; margin-top: 5px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        @media (min-width: 768px) {
+            .msg-row { max-width: 60%; }
+            .input-container, header, #online-users-bar { padding-left: 20%; padding-right: 20%; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <button class="tool-btn" onclick="location='talkchat_room.html'"><i class="fas fa-chevron-left fa-lg"></i></button>
+        <div style="text-align:center;">
+            <div id="room-display" style="font-weight: 600; letter-spacing: 1px; font-size: 1.1rem;">Room</div>
+        </div>
+        <button class="tool-btn" onclick="logout()"><i class="fas fa-power-off fa-lg"></i></button>
+    </header>
+
+    <div id="online-users-bar">
+        <i class="fas fa-circle" style="font-size: 8px;"></i> Online: <span id="user-list"></span>
+    </div>
+
+    <div id="output"></div>
+    <div id="typing-indicator"></div>
+
+    <div id="preview-bar">
+        <div id="preview-container"></div>
+        <div id="preview-text" style="flex:1; font-size: 0.8rem; color: #ddd;">Ready...</div>
+        <button class="tool-btn" onclick="cancelImage()"><i class="fas fa-times-circle fa-lg" style="color:#ff4757"></i></button>
+    </div>
+
+    <div class="input-container">
+        <button class="tool-btn" style="color:var(--accent)" onclick="document.getElementById('file-input').click()">
+            <i class="fas fa-camera fa-lg"></i>
+        </button>
+        <input type="file" id="file-input" hidden accept="image/*" multiple>
+        
+        <div class="input-wrapper">
+            <input type="text" id="msg-input" placeholder="Type a message..." autocomplete="off">
+        </div>
+        
+        <button class="send-btn" id="send-btn" onclick="handleSend()">
+            <i class="fas fa-paper-plane"></i>
+        </button>
+    </div>
+
+    <script src="talkchat_page.js"></script>
+</body>
+</html>

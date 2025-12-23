@@ -1,0 +1,192 @@
+/* GLOBAL STYLES */
+:root {
+    --primary: #000000;
+    --accent: #00f2fe;
+    --bg: #000000;
+    --glass: rgba(15, 20, 90, 0.274);
+    --glass-border: rgba(0, 0, 0, 0.199);
+}
+
+html, body {
+    
+    height: 100%;
+    margin: 0;
+    font-family: 'Inter', sans-serif; /* Cleaner modern font */
+    background: radial-gradient(circle at bottom, #000000,#7475a0, #230446);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* HEADER */
+.header {
+    font-size: clamp(30px, 8vw, 55px); /* Responsive font size */
+    font-weight: 600;
+    letter-spacing: 4px;
+    margin-top: 5vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-transform: uppercase;
+    text-shadow: 0 0 20px rgba(142, 45, 226, 0.5);
+}
+.header{
+    font-size: 40px;
+    margin-right: -25px;
+    filter: drop-shadow(0 0 10px var(black));
+}
+
+.header img {
+    width: 40px;
+    margin-left: -5px;
+    filter: drop-shadow(0 0 10px var(--accent));
+}
+
+/* LOGIN CONTAINER (GLASSMORPHISM) */
+.login_div {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-radius: 24px;
+    padding: 0px 70px;
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    width: 90%;
+    max-width: 420px;
+    margin-top: 30px;
+    text-align: center;
+    animation: slideUp 0.8s ease-out;
+}
+
+/* LOGO */
+.logo {
+    width: 90px;
+    height: 90px;
+    margin-bottom: 20px;
+    border-radius: 50%;
+    padding: 5px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    box-shadow: 0 0 20px rgba(142, 45, 226, 0.4);
+}
+
+h3.color_white {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+    margin-bottom: 25px;
+    font-weight: 300;
+    opacity: 0.9;
+}
+
+/* INPUT FIELDS */
+.form-group { margin-bottom: 15px; }
+
+input.form-control {
+    margin-left: -50px;
+    width: 300px !important;
+    height: 50px !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    border: 1px solid var(--glass-border) !important;
+    border-radius: 12px !important;
+    color: white !important;
+    padding: 0 20px !important;
+    font-size: 15px !important;
+    transition: all 0.3s ease;
+}
+
+input.form-control:focus {
+    border-color: var(--accent) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+    box-shadow: 0 0 15px rgba(0, 242, 254, 0.2) !important;
+    outline: none;
+}
+
+/* BUTTONS */
+.btn_main {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(135deg, var(--primary), #4a00e0);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(142, 45, 226, 0.3);
+}
+
+.btn_main:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(141, 45, 226, 0.219);
+    filter: brightness(5.0);
+}
+
+.btn_google {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(90deg, var(--primary), #8f62eb);
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn_google:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(141, 45, 226, 0.219);
+    filter: brightness(5.0);
+}
+
+/* LINKS */
+.switch_link {
+    margin-top: 25px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+}
+.switch_link a {
+    color: var(--accent);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+.switch_link a:hover {
+    color: white;
+    text-shadow: 0 0 10px var(--accent);
+}
+
+/* FOOTER */
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    color: rgba(255,255,255,0.7);
+    text-align: center;
+    padding: 12px 0;
+    font-size: 13px;
+    border-top: 1px solid var(--glass-border);
+}
+
+/* ANIMATIONS */
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--glass-border); border-radius: 10px; }

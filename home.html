@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - TalkChat</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background: linear-gradient(135deg, #180b61, #4e3d77, #9289b8);
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-family: 'Yeon Sung', cursive;
+            overflow: hidden;
+        }
+
+        /* Frosted glass container */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 50px 60px;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
+        }
+
+        /* Header animation */
+        .header-title {
+            font-size: 4rem;
+            color: #ffffff;
+            margin-bottom: 2rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.7);
+        }
+
+        /* Buttons */
+        .glass-btn {
+            padding: 16px 36px;
+            font-size: 1.25rem;
+            font-weight: 600;
+            border-radius: 9999px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .glass-btn:hover {
+            background: rgba(255,255,255,0.25);
+            color: #4c00ff;
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.5);
+        }
+
+        /* Footer */
+        .footer-text {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 6px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+            font-family: 'Arial', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="glass-card animate-fadeIn">
+        <h1 class="header-title animate-bounce">Welcome to TalkChat</h1>
+        <div class="flex flex-col md:flex-row gap-6 justify-center mt-8">
+            <a href="meet.html" class="glass-btn">Meeting</a>
+            <a href="index.html" class="glass-btn">Chat</a>
+        </div>
+    </div>
+
+    <div class="footer-text">
+        Made by Hidaksh
+    </div>
+
+    <!-- Optional: Tailwind animations -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    animation: {
+                        fadeIn: 'fadeIn 1.5s ease-in-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: 0, transform: 'translateY(20px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        },
+                    },
+                },
+            }
+        }
+    </script>
+</body>
+</html>
