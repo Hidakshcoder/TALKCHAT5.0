@@ -4,15 +4,15 @@ const firebaseConfig = {
     authDomain: "tell-and-talk.firebaseapp.com",
     databaseURL: "https://tell-and-talk-default-rtdb.firebaseio.com",
     projectId: "tell-and-talk",
-    storageBucket: "tell-and-talk.firebasestorage.app",
+    storageBucket: "tell-and-talk.appspot.com", // ✅ FIXED
     messagingSenderId: "579539761154",
     appId: "1:579539761154:web:a8c7c2ad083cb0fb34cf1b"
 };
 
-// Initialize Firebase
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
+
 
 // UI TOGGLE FUNCTIONS
 function showSignup() {
@@ -126,4 +126,5 @@ function resetPassword() {
         .catch((error) => {
             alert(error.message);
         });
+
 }
