@@ -12,6 +12,8 @@ const firebaseConfig = {
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+
 
 
 // UI TOGGLE FUNCTIONS
@@ -128,3 +130,4 @@ function resetPassword() {
         });
 
 }
+
