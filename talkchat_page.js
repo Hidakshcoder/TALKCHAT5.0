@@ -3,12 +3,13 @@ const firebaseConfig = {
     authDomain: "tell-and-talk.firebaseapp.com",
     databaseURL: "https://tell-and-talk-default-rtdb.firebaseio.com",
     projectId: "tell-and-talk",
-    storageBucket: "tell-and-talk.appspot.com",
+    storageBucket: "tell-and-talk.appspot.com", // ✅ FIXED
     messagingSenderId: "579539761154",
     appId: "1:579539761154:web:a8c7c2ad083cb0fb34cf1b"
 };
 
 if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+
 
 const room_name = localStorage.getItem("room_name");
 const user_name = localStorage.getItem("user_name") || "Guest";
@@ -225,4 +226,5 @@ function editMsg(id, old) {
 function deleteMsg(id) {
     if (confirm("Delete?")) roomRef.child(id).update({ deleted: true, message: "Deleted", type: "text" });
 }
+
 function logout() { firebase.auth().signOut().then(() => { localStorage.clear(); location = "index.html"; }); }
