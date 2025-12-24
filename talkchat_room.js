@@ -1,18 +1,17 @@
-// Firebase Configuration
 const firebaseConfig = {
     apiKey: "AIzaSyDqM3RtWOynG72MBKueIReCu2S-ZQcLESo",
     authDomain: "tell-and-talk.firebaseapp.com",
     databaseURL: "https://tell-and-talk-default-rtdb.firebaseio.com",
     projectId: "tell-and-talk",
-    storageBucket: "tell-and-talk.firebasestorage.app",
+    storageBucket: "tell-and-talk.appspot.com", // ✅ FIXED
     messagingSenderId: "579539761154",
     appId: "1:579539761154:web:a8c7c2ad083cb0fb34cf1b"
 };
 
-// Initialize only if not already initialized
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
+
 
 // Check if user is logged in
 firebase.auth().onAuthStateChanged((user) => {
@@ -84,4 +83,5 @@ function logout() {
         localStorage.clear();
         window.location = "index.html";
     });
+
 }
