@@ -1,116 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <!-- 🔐 Security Headers -->
-<meta http-equiv="Content-Security-Policy"
-content="
-default-src 'self' https://*.googleapis.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com https://accounts.google.com https://api.imgbb.com;
-script-src 'self' 'unsafe-inline' https://*.googleapis.com https://*.gstatic.com;
-style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com;
-img-src 'self' data: https://*;
-connect-src https://*.firebaseio.com https://*.googleapis.com https://api.imgbb.com wss://*.firebaseio.com;
-frame-src https://accounts.google.com;
-">
-
-<meta name="referrer" content="strict-origin-when-cross-origin">
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-
     <meta charset="UTF-8">
+
+    <!-- 🔐 SECURITY / TRUST HEADERS -->
+    <meta http-equiv="Content-Security-Policy"
+        content="
+        default-src 'self' https://*.googleapis.com https://*.gstatic.com https://*.firebaseio.com https://*.firebaseapp.com;
+        script-src 'self' 'unsafe-inline' https://www.gstatic.com https://ajax.googleapis.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://maxcdn.bootstrapcdn.com;
+        font-src https://fonts.gstatic.com;
+        img-src 'self' data: https:;
+        connect-src https://*.firebaseio.com https://identitytoolkit.googleapis.com;
+        ">
+
+    <meta http-equiv="X-Content-Type-Options" content="nosniff">
+    <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
+    <meta http-equiv="X-Frame-Options" content="DENY">
+
     <link rel="icon" href="favicon.png">
     <title>Talkchat | Welcome</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Yeon+Sung&display=swap" rel="stylesheet">
+
+    <meta name="description" content="Talkchat is a secure real-time messaging platform.">
+    <meta name="author" content="Hidaksh Patel">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Yeon+Sung&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.6.2/firebase-database.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
 
-    <h1 class="header">
-        Talkchat <sup><img src="m2.png" alt="icon"></sup>
-    </h1>
+<h1 class="header">
+    Talkchat <sup><img src="m2.png" alt="icon"></sup>
+</h1>
 
-    <div class="login_div">
+<div class="login_div">
 
-        
-        <div id="login-section">
-            <h3 class="color_white">LOGIN</h3>
-            
-            <div class="form-group">
-                <input type="email" id="login_email" class="form-control" placeholder="Email Address">
-            </div>
-            <div class="form-group">
-                <input type="password" id="login_password" class="form-control" placeholder="Password">
-            </div>
+    <div id="login-section">
+        <h3 class="color_white">LOGIN</h3>
 
-            <button class="btn_main" onclick="emailLogin()">LOGIN</button>
-            
-            <div style="margin: 20px 0; display: flex; align-items: center; gap: 10px; opacity: 0.5;">
-                <hr style="flex:1; border-color: rgba(255,255,255,0.2)"> <span>OR</span> <hr style="flex:1; border-color: rgba(255,255,255,0.2)">
-            </div>
+        <input type="email" id="login_email" class="form-control" placeholder="Email Address">
+        <input type="password" id="login_password" class="form-control" placeholder="Password">
 
-            <button class="btn_google" onclick="googleLogin()">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" width="20px"> 
-                Login with Google
-            </button>
-            
-            <div class="switch_link">
-                <a href="#" onclick="showForgot()">Forgot Password?</a><br><br>
-                <span>New here? </span><a href="#" onclick="showSignup()">Create Account</a>
-            </div>
-        </div>
+        <button class="btn_main" onclick="emailLogin()">LOGIN</button>
 
-        <div id="signup-section" style="display: none;">
-            <h3 class="color_white">REGISTER</h3>
-            
-            <div class="form-group">
-                <input type="text" id="signup_name" class="form-control" placeholder="Display Name">
-            </div>
-            <div class="form-group">
-                <input type="email" id="signup_email" class="form-control" placeholder="Email Address">
-            </div>
-            <div class="form-group">
-                <input type="password" id="signup_password" class="form-control" placeholder="Password (Min 6 chars)">
-            </div>
+        <div style="margin:20px 0; opacity:.5; text-align:center;">OR</div>
 
-            <button class="btn_main" onclick="emailSignup()">CREATE ACCOUNT</button>
-            
-            <div class="switch_link">
-                <span>Already have an account? </span><a href="#" onclick="showLogin()">Login</a>
-            </div>
-        </div>
+        <button class="btn_google" onclick="googleLogin()">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/2048px-Google_%22G%22_logo.svg.png" width="20">
+            Login with Google
+        </button>
 
-        <div id="forgot-section" style="display: none;">
-            <h3 class="color_white">RESET PASSWORD</h3>
-            <p style="color:rgba(255,255,255,0.6); font-size:13px; margin-bottom: 20px;">
-                Enter your email to receive a reset link.
-            </p>
-            
-            <div class="form-group">
-                <input type="email" id="reset_email" class="form-control" placeholder="Enter your email">
-            </div>
-
-            <button class="btn_main" onclick="resetPassword()">SEND RESET LINK</button>
-            
-            <div class="switch_link">
-                <a href="#" onclick="showLogin()">Back to Login</a>
-            </div>
+        <div class="switch_link">
+            <a href="#" onclick="showForgot()">Forgot Password?</a><br><br>
+            New here? <a href="#" onclick="showSignup()">Create Account</a>
         </div>
     </div>
 
-     <footer>
-        <span>
- Created by <strong>Hidaksh Patel</strong>  / <a href="privacy.html" style="font-size:12px;color:#aaa;">Privacy Policy</a></span>
-    </footer>
+    <div id="signup-section" style="display:none;">
+        <h3 class="color_white">REGISTER</h3>
+        <input type="text" id="signup_name" class="form-control" placeholder="Display Name">
+        <input type="email" id="signup_email" class="form-control" placeholder="Email">
+        <input type="password" id="signup_password" class="form-control" placeholder="Password">
+        <button class="btn_main" onclick="emailSignup()">CREATE ACCOUNT</button>
+        <div class="switch_link"><a href="#" onclick="showLogin()">Back to Login</a></div>
+    </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="talkchat.js"></script>
+    <div id="forgot-section" style="display:none;">
+        <h3 class="color_white">RESET PASSWORD</h3>
+        <input type="email" id="reset_email" class="form-control" placeholder="Email">
+        <button class="btn_main" onclick="resetPassword()">SEND RESET LINK</button>
+        <div class="switch_link"><a href="#" onclick="showLogin()">Back</a></div>
+    </div>
+
+</div>
+
+<footer>
+    © 2025 Talkchat • Created by <strong>Hidaksh Patel</strong> •
+    <a href="privacy.html">Privacy</a> • <a href="terms.html">Terms</a>
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="talkchat.js"></script>
+
 </body>
-
-</html> 
-
+</html>
